@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jonathan Shin - Student Portfolio</title>
+    <link rel="stylesheet" href="pw.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-emoji">🎓</span>
+                <span class="logo-text">Jonathan's Portfolio</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="pw.html" class="nav-link active">Home</a></li>
+                <li><a href="transcript.html" class="nav-link">Transcript</a></li>
+                <li><a href="activities.html" class="nav-link">Activities</a></li>
+                <li><a href="projects.html" class="nav-link">Projects</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="profile-pic-container" onclick="toggleBio()">
+                <img src="face.jpg" alt="Profile Picture" class="profile-pic">
+                <div class="bio-overlay" id="bioOverlay">Jonathan J. Shin</div>
+            </div>
+            <h1 class="hero-title">Hi, I'm <span class="name-highlight">Jonathan Shin</span></h1>
+            <p class="hero-subtitle">High School Student | Future Anesthesiologist/Engineer? | Class of 2027</p>
+        </div>
+    </section>
+
+    <section class="about-me">
+        <div class="container">
+            <h2 class="section-title">About Me</h2>
+            <div class="about-grid">
+                <div class="about-card">
+                    <div class="card-icon">📚</div>
+                    <h3>Academic Interests</h3>
+                    <p>Biology, Chemistry, Physics, Computer Science, Engineering</p>
+                </div>
+                <div class="about-card">
+                    <div class="card-icon">🎯</div>
+                    <h3>Goals & Dreams</h3>
+                    <p>Becoming an Anesthesiologist</p>
+                </div>
+                <div class="about-card">
+                    <div class="card-icon">⚡</div>
+                    <h3>Hobbies</h3>
+                    <p>Coding, Gaming, Reading, computer hardware</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="fun-facts">
+        <div class="container">
+            <h2 class="section-title">Fun Facts About Me</h2>
+            <div class="facts-container">
+                <div class="fact-item">
+                    <span class="fact-emoji">🎮</span>
+                    <span class="fact-text">I built my own PC at age 14</span>
+                </div>
+                <div class="fact-item">
+                    <span class="fact-emoji">🗣️</span>
+                    <span class="fact-text">I speak 3 languages fluently</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="quick-links">
+        <div class="container">
+            <h2 class="section-title">Explore My Journey</h2>
+            <div class="links-grid">
+                <a href="transcript.html" class="link-card">
+                    <div class="link-icon">📊</div>
+                    <h3>Academic Transcript</h3>
+                    <p>View my grades, GPA, and coursework</p>
+                    <span class="link-arrow">→</span>
+                </a>
+                <a href="activities.html" class="link-card">
+                    <div class="link-icon">🏃</div>
+                    <h3>Activities & Leadership</h3>
+                    <p>Clubs, sports, and volunteer work</p>
+                    <span class="link-arrow">→</span>
+                </a>
+                <a href="projects.html" class="link-card">
+                    <div class="link-icon">💡</div>
+                    <h3>Projects & Awards</h3>
+                    <p>My coolest projects and achievements</p>
+                    <span class="link-arrow">→</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact">
+        <div class="container">
+            <h2 class="section-title">Let's Connect!</h2>
+            <div class="contact-content">
+                <p class="contact-intro">Have questions? Want to collaborate on a project? Just want to say hi? Drop me a message!</p>
+                <form class="contact-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <input type="text" id="name" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="email" placeholder="Your Email" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="subject" placeholder="Subject" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="message" rows="5" placeholder="Your Message" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Send Message 🚀</button>
+                </form>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/jonathan-shin-0949a0364/" target="_blank" class="social-link">
+                        <i class="fab fa-linkedin social-icon"></i>
+                        <span>LinkedIn</span>
+                    </a>
+                    <a href="https://github.com/j0nsh1n" target="_blank" class="social-link">
+                        <i class="fab fa-github social-icon"></i>
+                        <span>GitHub</span>
+                    </a>
+                    <a href="https://www.instagram.com/j0n_sh1n" target="_blank" class="social-link">
+                        <i class="fab fa-instagram social-icon"></i>
+                        <span>Instagram</span>
+                    </a>
+                    <a href="#" onclick="showDiscordPopup('j00he0n'); return false;" class="social-link discord-link">
+                        <i class="fab fa-discord social-icon"></i>
+                        <span>Discord</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>Blank</p>
+        </div>
+    </footer>
+    <!-- Option 1: EmailJS (Recommended) -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+    <script src="pw.js"></script>
+</body>
+</html>
