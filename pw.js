@@ -48,7 +48,23 @@ function updateNavbarBackground() {
 
 window.addEventListener('scroll', updateNavbarBackground);
 
-// Existing/Placeholder Functions (Fully Implemented)
+// EmailJS Form Handling
+document.getElementById('contactForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    
+    // Replace with your EmailJS Service ID and Template ID
+
+    emailjs.sendForm("service_mdo0jec","template_2vv226u", this)
+        .then(function() {
+            showSuccessMessage('Message sent successfully!');
+            document.getElementById('contactForm').reset();
+        }, function(error) {
+            console.log('Failed to send:', error);
+            showSuccessMessage('Oops! Something went wrong. Try again?');
+        });
+});
+
+// Existing Discord Popup (Enhanced for Social Button)
 function showDiscordPopup(username) {
     const overlay = document.createElement('div');
     overlay.className = 'discord-popup-overlay';
