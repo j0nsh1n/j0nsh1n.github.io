@@ -8,14 +8,24 @@ function initDarkMode() {
     } else {
         updateDarkModeToggle(false);
     }
-    // Dynamically add toggle button to nav if not present
-    const navMenu = document.querySelector('.nav-menu');
-    if (navMenu && !document.querySelector('.dark-mode-toggle')) {
-        const toggleLi = document.createElement('li');
-        toggleLi.innerHTML = '<button class="dark-mode-toggle" aria-label="Toggle dark mode"><i class="fas fa-moon dark-mode-icon"></i></button>';
-        navMenu.appendChild(toggleLi);
-        document.querySelector('.dark-mode-toggle').addEventListener('click', toggleDarkMode);
+    
+    // Wait for DOM and add toggle if missing
+    function addToggleIfNeeded() {
+        const navMenu = document.querySelector('.nav-menu');
+        if (navMenu && !document.querySelector('.dark-mode-toggle')) {
+            const toggleLi = document.createElement('li');
+            toggleLi.innerHTML = '<button class="dark-mode-toggle" aria-label="Toggle dark mode"><i class="fas fa-moon dark-mode-icon"></i></button>';
+            navMenu.appendChild(toggleLi);
+            document.querySelector('.dark-mode-toggle').addEventListener('click', toggleDarkMode);
+        }
     }
+    
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', addToggleIfNeeded);
+    } else {
+        addToggleIfNeeded();
+    }
+    
     updateNavbarBackground(); // Initial navbar update
 }
 
@@ -49,11 +59,10 @@ function updateNavbarBackground() {
 window.addEventListener('scroll', updateNavbarBackground);
 
 // EmailJS Form Handling
-document.getElementById('contactForm').addEventListener('submit', function(event) {
+document.getElementById('contactForm')?.addEventListener('submit', function(event) {
     event.preventDefault();
     
     // Replace with your EmailJS Service ID and Template ID
-
     emailjs.sendForm("service_mdo0jec","template_2vv226u", this)
         .then(function() {
             showSuccessMessage('Message sent successfully!');

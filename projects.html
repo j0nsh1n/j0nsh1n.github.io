@@ -6,11 +6,15 @@
     <title>Projects - Jonathan Shin</title>
     <link rel="stylesheet" href="pw.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Prism.js for syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
 </head>
 <body>
     <nav class="navbar">
         <div class="nav-container">
-            <div class="logo">Jonathan Shin</div>
+            <a href="index.html" class="logo">Jonathan Shin</a>
             <ul class="nav-menu">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="activities.html">Activities</a></li>
@@ -23,24 +27,221 @@
     <main>
         <section class="section">
             <h1>Projects 🚀</h1>
-            <p>My coding and engineering projects</p>
-        </section>
+            <p class="section-subtitle">My coding and engineering projects—view, copy, or download the code to try it yourself!</p>
 
-        <section class="section">
-            <div class="projects-grid">
-                <div class="card">
-                    <h3>Project 1</h3>
-                    <p>Blank Description - Tech Stack</p>
+            <!-- Project 1: Hospital Supply Tracker -->
+            <div class="project-card">
+                <h2>Project 1: Hospital Supply Tracker</h2>
+                <p>A full inventory management system adapted for hospital supplies using Pandas. Tracks items like syringes and bandages, with sales (usage) logging and reports. Desktop version saves to Excel; browser-adapted version runs in-memory. Copy/download to try!</p>
+                <div class="code-view">
+                    <div class="code-actions">
+                        <button id="copy-inventory" class="copy-btn"><i class="fas fa-copy"></i> Copy Code</button>
+                        <button id="download-inventory-desktop" class="download-btn"><i class="fas fa-download"></i> Download Desktop Version (hospital_supply_tracker.py)</button>
+                        <button id="download-inventory-browser" class="download-btn"><i class="fas fa-download"></i> Download Browser Version (hospital_supply_tracker_browser.py)</button>
+                    </div>
+                    <pre><code id="inventory-code" class="language-python"># Full code for hospital_supply_tracker_browser.py (in-memory, no files)
+import pandas as pd
+import datetime
+
+class HospitalSupplyManager:
+    def __init__(self):
+        # In-memory default hospital supplies
+        self.inventory_df = pd.DataFrame({
+            'Item': ['syringe', 'bandage', 'gauze', 'glove'],
+            'Quantity': [500, 300, 200, 400],
+            'Price': [0.50, 0.20, 0.75, 0.10]
+        })
+        self.transactions_df = pd.DataFrame(columns=['Timestamp', 'Type', 'Item', 'Quantity', 'Price', 'Total'])
+        print("Hospital supplies loaded in browser (in-memory). No file saves.")
+    
+    def display_inventory(self):
+        """Display current inventory."""
+        print("\nCurrent Hospital Inventory:")
+        print(self.inventory_df.to_string(index=False))
+    
+    def log_usage(self, item, quantity):
+        """Log usage (like a 'sale') and update inventory."""
+        if item not in self.inventory_df['Item'].values:
+            print(f"Item {item} not found in inventory.")
+            return False
+        
+        item_idx = self.inventory_df[self.inventory_df['Item'] == item].index[0]
+        current_quantity = self.inventory_df.loc[item_idx, 'Quantity']
+        price = self.inventory_df.loc[item_idx, 'Price']
+        
+        if current_quantity < quantity:
+            print(f"Not enough {item} in stock. Available: {current_quantity}")
+            return False
+        
+        self.inventory_df.loc[item_idx, 'Quantity'] -= quantity
+        
+        new_transaction = pd.DataFrame({
+            'Timestamp': [datetime.datetime.now()],
+            'Type': ['Usage'],
+            'Item': [item],
+            'Quantity': [quantity],
+            'Price': [price],
+            'Total': [price * quantity]
+        })
+        self.transactions_df = pd.concat([self.transactions_df, new_transaction], ignore_index=True)
+        
+        print(f"Used {quantity} {item}(s) for ${price * quantity:.2f}")
+        return True
+    
+    def log_restocking(self, item, quantity):
+        """Log restocking and update inventory."""
+        if item not in self.inventory_df['Item'].values:
+            print(f"Item {item} not found in inventory.")
+            return False
+        
+        item_idx = self.inventory_df[self.inventory_df['Item'] == item].index[0]
+        self.inventory_df.loc[item_idx, 'Quantity'] += quantity
+        price = self.inventory_df.loc[item_idx, 'Price']
+        
+        new_transaction = pd.DataFrame({
+            'Timestamp': [datetime.datetime.now()],
+            'Type': ['Restock'],
+            'Item': [item],
+            'Quantity': [quantity],
+            'Price': [price],
+            'Total': [price * quantity]
+        })
+        self.transactions_df = pd.concat([self.transactions_df, new_transaction], ignore_index=True)
+        
+        print(f"Restocked {quantity} {item}(s).")
+        return True
+    
+    def add_item(self, item, quantity, price):
+        """Add a new item to inventory."""
+        if item in self.inventory_df['Item'].values:
+            print(f"Item {item} already exists in inventory.")
+            return False
+        
+        new_item = pd.DataFrame({
+            'Item': [item],
+            'Quantity': [quantity],
+            'Price': [price]
+        })
+        self.inventory_df = pd.concat([self.inventory_df, new_item], ignore_index=True)
+        
+        print(f"Added {item} to inventory with quantity {quantity} and price ${price}")
+        return True
+    
+    def remove_item(self, item):
+        """Remove an item from inventory."""
+        if item not in self.inventory_df['Item'].values:
+            print(f"Item {item} not found in inventory.")
+            return False
+        
+        self.inventory_df = self.inventory_df[self.inventory_df['Item'] != item]
+        
+        print(f"Removed {item} from inventory.")
+        return True
+    
+    def calculate_usage(self, start_date=None, end_date=None):
+        """Calculate total usage costs, optionally within a date range."""
+        usage_df = self.transactions_df[self.transactions_df['Type'] == 'Usage'].copy()
+        
+        if start_date or end_date:
+            usage_df['Timestamp'] = pd.to_datetime(usage_df['Timestamp'])
+            if start_date:
+                usage_df = usage_df[usage_df['Timestamp'] >= start_date]
+            if end_date:
+                usage_df = usage_df[usage_df['Timestamp'] <= end_date]
+        
+        total_usage = usage_df['Total'].sum()
+        print(f"Total usage cost: ${total_usage:.2f}")
+        if not usage_df.empty:
+            print("\nUsage breakdown by item:")
+            item_usage = usage_df.groupby('Item')['Total'].sum().sort_values(ascending=False)
+            print(item_usage.to_string())
+        return total_usage, usage_df
+    
+    def show_transactions(self, last_n=10):
+        """Show the last n transactions."""
+        print(f"\nLast {last_n} transactions:")
+        print(self.transactions_df.tail(last_n).to_string(index=False))
+    
+    def get_low_stock_items(self, threshold=50):
+        """Get items with stock below threshold."""
+        low_stock = self.inventory_df[self.inventory_df['Quantity'] < threshold]
+        if not low_stock.empty:
+            print(f"\nLow stock items (below {threshold}):")
+            print(low_stock.to_string(index=False))
+        else:
+            print(f"\nNo items below {threshold} units.")
+        return low_stock
+
+# Global instance for easy access (or run main() for CLI)
+# hospitalManager = HospitalSupplyManager()
+# hospitalManager.display_inventory()
+</code></pre>
                 </div>
-                <div class="card">
-                    <h3>Project 2</h3>
-                    <p>Blank Description - Tech Stack</p>
-                </div>
-                <!-- Add more cards -->
+                <p><strong>Tech Stack:</strong> Python, Pandas</p>
+                <p><em>Tip: For desktop Excel saves, download the original version. Run: python hospital_supply_tracker.py</em></p>
             </div>
         </section>
     </main>
 
-    <script src="pw.js" defer></script>
+    <script src="pw.js"></script>
+    <script>
+        // Simple copy/download handlers (updated for new projects)
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const codeId = btn.id.replace('copy-', '');
+                const code = document.getElementById(codeId + '-code').textContent;
+                try {
+                    await navigator.clipboard.writeText(code);
+                    btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    setTimeout(() => btn.innerHTML = '<i class="fas fa-copy"></i> Copy Code', 2000);
+                } catch (err) {
+                    // Fallback: Select and copy
+                    const range = document.createRange();
+                    range.selectNodeContents(document.getElementById(codeId + '-code'));
+                    window.getSelection().removeAllRanges();
+                    window.getSelection().addRange(range);
+                    document.execCommand('copy');
+                    window.getSelection().removeAllRanges();
+                    btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    setTimeout(() => btn.innerHTML = '<i class="fas fa-copy"></i> Copy Code', 2000);
+                }
+            });
+        });
+
+        document.querySelectorAll('.download-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                let code, filename;
+                if (btn.id === 'download-inventory-desktop') {
+                    // Paste your full original inventorytracker.py code here as a string (adapted for hospital)
+                    code = `import pandas as pd\nimport datetime\nfrom pathlib import Path\nfrom IPython.display import display\n\nclass HospitalSupplyManager:\n    # ... (full original code adapted for hospital items)\n\n# main() function etc.`;
+                    filename = 'hospital_supply_tracker.py';
+                } else if (btn.id === 'download-inventory-browser') {
+                    code = document.getElementById('inventory-code').textContent;
+                    filename = 'hospital_supply_tracker_browser.py';
+                } else if (btn.id === 'download-tictactoe') {
+                    code = document.getElementById('tictactoe-code').textContent;
+                    filename = 'tictactoe.py';
+                } else if (btn.id === 'download-scraper') {
+                    code = document.getElementById('scraper-code').textContent;
+                    filename = 'news_scraper.py';
+                } else if (btn.id === 'download-ml') {
+                    code = document.getElementById('ml-code').textContent;
+                    filename = 'iris_classifier.py';
+                }
+                const blob = new Blob([code], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+        });
+
+        // Highlight code on load
+        Prism.highlightAll();
+    </script>
 </body>
 </html>
