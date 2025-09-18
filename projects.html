@@ -40,107 +40,165 @@
                     <p>A full inventory management system adapted for hospital supplies using Pandas. Tracks items like syringes and bandages, with sales (usage) logging and reports. Desktop version saves to an excel spreadsheet.</p>
                     <div class="code-container">
                         <pre>
-# Full code for hospital_supply_tracker_browser.py (in-memory, no files)
+# Full code for hospital_supply_tracker_browser.py
 import pandas as pd
 import datetime
+from pathlib import Path
+from IPython.display import display
 
-class HospitalSupplyManager:
-    def __init__(self):
-        # In-memory default hospital supplies
+class InventoryManager:
+    def __init__(self, excel_file='hospital_inventory.xlsx'):
+        # Convert string to Path object if needed
+        self.excel_file = Path(excel_file)
+        self.inventory_df = None
+        self.transactions_df = None
+        self.initialize_spreadsheet()
+    
+    def initialize_spreadsheet(self):
+        """Initialize or load the Excel file with inventory and transactions sheets."""
+        if self.excel_file.exists():
+            # Load existing file
+            try:
+                self.inventory_df = pd.read_excel(self.excel_file, sheet_name='Inventory')
+                self.transactions_df = pd.read_excel(self.excel_file, sheet_name='Transactions')
+                print(f"Loaded existing hospital inventory from {self.excel_file}")
+            except Exception as e:
+                print(f"Error loading file: {e}")
+                self.create_new_spreadsheet()
+        else:
+            self.create_new_spreadsheet()
+    
+    def create_new_spreadsheet(self):
+        """Create a new spreadsheet with default hospital equipment inventory."""
+        # Create directory if it doesn't exist
+        self.excel_file.parent.mkdir(parents=True, exist_ok=True)
+        
+        # Create default hospital equipment inventory
         self.inventory_df = pd.DataFrame({
-            'Item': ['syringe', 'bandage', 'gauze', 'glove'],
-            'Quantity': [500, 300, 200, 400],
-            'Price': [0.50, 0.20, 0.75, 0.10]
+            'Equipment': ['syringe', 'latex_gloves', 'surgical_mask', 'gauze_pad', 'thermometer', 'stethoscope', 'blood_pressure_cuff', 'iv_catheter', 'bandage_roll', 'disinfectant_wipe'],
+            'Quantity': [200, 150, 300, 100, 50, 25, 40, 80, 120, 250],
+            'Price': [0.50, 0.20, 0.15, 0.10, 15.00, 25.00, 20.00, 2.50, 1.00, 0.30]
         })
-        self.transactions_df = pd.DataFrame(columns=['Timestamp', 'Type', 'Item', 'Quantity', 'Price', 'Total'])
-        print("Hospital supplies loaded in browser (in-memory). No file saves.")
+        
+        # Create empty transactions dataframe
+        self.transactions_df = pd.DataFrame(columns=['Timestamp', 'Type', 'Equipment', 'Quantity', 'Price', 'Total'])
+        
+        # Save to Excel
+        self.save_to_excel()
+        print(f"Created new hospital inventory file: {self.excel_file}")
+    
+    def save_to_excel(self):
+        """Save both dataframes to Excel file."""
+        with pd.ExcelWriter(self.excel_file, engine='openpyxl') as writer:
+            self.inventory_df.to_excel(writer, sheet_name='Inventory', index=False)
+            self.transactions_df.to_excel(writer, sheet_name='Transactions', index=False)
     
     def display_inventory(self):
-        """Display current inventory."""
+        """Display current hospital inventory."""
         print("\nCurrent Hospital Inventory:")
         print(self.inventory_df.to_string(index=False))
     
-    def log_usage(self, item, quantity):
-        """Log usage (like a 'sale') and update inventory."""
-        if item not in self.inventory_df['Item'].values:
-            print(f"Item {item} not found in inventory.")
+    def log_usage(self, equipment, quantity):
+        """Log equipment usage and update inventory."""
+        # Check if equipment exists
+        if equipment not in self.inventory_df['Equipment'].values:
+            print(f"Equipment {equipment} not found in inventory.")
             return False
         
-        item_idx = self.inventory_df[self.inventory_df['Item'] == item].index[0]
-        current_quantity = self.inventory_df.loc[item_idx, 'Quantity']
-        price = self.inventory_df.loc[item_idx, 'Price']
+        # Get equipment info
+        equipment_idx = self.inventory_df[self.inventory_df['Equipment'] == equipment].index[0]
+        current_quantity = self.inventory_df.loc[equipment_idx, 'Quantity']
+        price = self.inventory_df.loc[equipment_idx, 'Price']
         
+        # Check if enough in stock
         if current_quantity < quantity:
-            print(f"Not enough {item} in stock. Available: {current_quantity}")
+            print(f"Not enough {equipment} in stock. Available: {current_quantity}")
             return False
         
-        self.inventory_df.loc[item_idx, 'Quantity'] -= quantity
+        # Update inventory
+        self.inventory_df.loc[equipment_idx, 'Quantity'] -= quantity
         
+        # Log transaction
         new_transaction = pd.DataFrame({
             'Timestamp': [datetime.datetime.now()],
             'Type': ['Usage'],
-            'Item': [item],
+            'Equipment': [equipment],
             'Quantity': [quantity],
             'Price': [price],
             'Total': [price * quantity]
         })
         self.transactions_df = pd.concat([self.transactions_df, new_transaction], ignore_index=True)
         
-        print(f"Used {quantity} {item}(s) for ${price * quantity:.2f}")
+        # Save to Excel
+        self.save_to_excel()
+        print(f"Used {quantity} {equipment}(s) for ${price * quantity:.2f}")
         return True
     
-    def log_restocking(self, item, quantity):
+    def log_restocking(self, equipment, quantity):
         """Log restocking and update inventory."""
-        if item not in self.inventory_df['Item'].values:
-            print(f"Item {item} not found in inventory.")
+        # Check if equipment exists
+        if equipment not in self.inventory_df['Equipment'].values:
+            print(f"Equipment {equipment} not found in inventory.")
             return False
         
-        item_idx = self.inventory_df[self.inventory_df['Item'] == item].index[0]
-        self.inventory_df.loc[item_idx, 'Quantity'] += quantity
-        price = self.inventory_df.loc[item_idx, 'Price']
+        # Update inventory
+        equipment_idx = self.inventory_df[self.inventory_df['Equipment'] == equipment].index[0]
+        self.inventory_df.loc[equipment_idx, 'Quantity'] += quantity
+        price = self.inventory_df.loc[equipment_idx, 'Price']
         
+        # Log transaction
         new_transaction = pd.DataFrame({
             'Timestamp': [datetime.datetime.now()],
             'Type': ['Restock'],
-            'Item': [item],
+            'Equipment': [equipment],
             'Quantity': [quantity],
             'Price': [price],
             'Total': [price * quantity]
         })
         self.transactions_df = pd.concat([self.transactions_df, new_transaction], ignore_index=True)
         
-        print(f"Restocked {quantity} {item}(s).")
+        # Save to Excel
+        self.save_to_excel()
+        print(f"Restocked {quantity} {equipment}(s).")
         return True
     
-    def add_item(self, item, quantity, price):
-        """Add a new item to inventory."""
-        if item in self.inventory_df['Item'].values:
-            print(f"Item {item} already exists in inventory.")
+    def add_equipment(self, equipment, quantity, price):
+        """Add a new equipment to inventory."""
+        # Check if equipment already exists
+        if equipment in self.inventory_df['Equipment'].values:
+            print(f"Equipment {equipment} already exists in inventory.")
             return False
         
-        new_item = pd.DataFrame({
-            'Item': [item],
+        # Add new equipment
+        new_equipment = pd.DataFrame({
+            'Equipment': [equipment],
             'Quantity': [quantity],
             'Price': [price]
         })
-        self.inventory_df = pd.concat([self.inventory_df, new_item], ignore_index=True)
+        self.inventory_df = pd.concat([self.inventory_df, new_equipment], ignore_index=True)
         
-        print(f"Added {item} to inventory with quantity {quantity} and price ${price}")
+        # Save to Excel
+        self.save_to_excel()
+        print(f"Added {equipment} to inventory with quantity {quantity} and price ${price}")
         return True
     
-    def remove_item(self, item):
-        """Remove an item from inventory."""
-        if item not in self.inventory_df['Item'].values:
-            print(f"Item {item} not found in inventory.")
+    def remove_equipment(self, equipment):
+        """Remove equipment from inventory."""
+        # Check if equipment exists
+        if equipment not in self.inventory_df['Equipment'].values:
+            print(f"Equipment {equipment} not found in inventory.")
             return False
         
-        self.inventory_df = self.inventory_df[self.inventory_df['Item'] != item]
+        # Remove equipment
+        self.inventory_df = self.inventory_df[self.inventory_df['Equipment'] != equipment]
         
-        print(f"Removed {item} from inventory.")
+        # Save to Excel
+        self.save_to_excel()
+        print(f"Removed {equipment} from inventory.")
         return True
     
     def calculate_usage(self, start_date=None, end_date=None):
-        """Calculate total usage costs, optionally within a date range."""
+        """Calculate total usage cost, optionally within a date range."""
         usage_df = self.transactions_df[self.transactions_df['Type'] == 'Usage'].copy()
         
         if start_date or end_date:
@@ -152,6 +210,160 @@ class HospitalSupplyManager:
         
         total_usage = usage_df['Total'].sum()
         return total_usage, usage_df
+    
+    def show_transactions(self, last_n=10):
+        """Show the last n transactions."""
+        print(f"\nLast {last_n} transactions:")
+        print(self.transactions_df.tail(last_n).to_string(index=False))
+    
+    def get_low_stock_items(self, threshold=10):
+        """Get items with stock below threshold."""
+        low_stock = self.inventory_df[self.inventory_df['Quantity'] < threshold]
+        if not low_stock.empty:
+            print(f"\nLow stock equipment (below {threshold}):")
+            print(low_stock.to_string(index=False))
+        else:
+            print(f"\nNo equipment below {threshold} units.")
+        return low_stock
+
+def authenticate():
+    """Simple authentication with 3 attempts."""
+    max_attempts = 3
+    for attempt in range(max_attempts):
+        username = input("Enter username: ")
+        password = input("Enter password: ")
+        if username == "admin" and password == "hospital123":
+            print("Authentication successful!")
+            return True
+        else:
+            print(f"Invalid credentials. Attempt {attempt + 1}/{max_attempts}")
+    print("Maximum attempts exceeded. Access denied.")
+    return False
+
+# Main program
+def main():
+    print("Welcome to Hospital Equipment Inventory Management System")
+    
+    # Use specific path PLEASE CHANGE TO YOUR DESIRED PATH
+    manager = InventoryManager(r'C:\Users\jonat\Documents\GitHub\IT\hospital_inventory.xlsx')
+    print(f"\nWorking with inventory file: {manager.excel_file.absolute()}")
+    
+    # Authentication
+    if not authenticate():
+        return
+    
+    while True:
+        print("\n" + "="*60)
+        print("Hospital Equipment Inventory Management System (Spreadsheet Version)")
+        print("="*60)
+        print("1. Log Equipment Usage")
+        print("2. Log Restocking")
+        print("3. Add Equipment")
+        print("4. Remove Equipment")
+        print("5. Calculate Usage Cost")
+        print("6. Show Inventory")
+        print("7. Show Recent Transactions")
+        print("8. Check Low Stock Equipment")
+        print("9. Exit")
+        
+        choice = input("\nEnter your choice: ")
+        
+        if choice == "1":
+            print("\n--- Log Equipment Usage ---")
+            print("Available equipment:")
+            manager.display_inventory()
+            equipment = input("\nEnter equipment name (use underscores for spaces, e.g., blood_pressure_cuff): ").lower().replace(' ', '_')
+            try:
+                quantity = int(input("Enter quantity used: "))
+                manager.log_usage(equipment, quantity)
+            except ValueError:
+                print("Invalid quantity. Please enter a number.")
+        
+        elif choice == "2":
+            print("\n--- Log Restocking ---")
+            print("Available equipment:")
+            manager.display_inventory()
+            equipment = input("\nEnter equipment name (use underscores for spaces, e.g., blood_pressure_cuff): ").lower().replace(' ', '_')
+            try:
+                quantity = int(input("Enter quantity restocked: "))
+                manager.log_restocking(equipment, quantity)
+            except ValueError:
+                print("Invalid quantity. Please enter a number.")
+        
+        elif choice == "3":
+            print("\n--- Add New Equipment ---")
+            print("Current inventory for reference:")
+            manager.display_inventory()
+            equipment = input("\nEnter new equipment name (use underscores for spaces): ").lower().replace(' ', '_')
+            try:
+                quantity = int(input("Enter initial quantity: "))
+                price = float(input("Enter price per unit: "))
+                manager.add_equipment(equipment, quantity, price)
+            except ValueError:
+                print("Invalid quantity or price. Please enter numbers.")
+        
+        elif choice == "4":
+            print("\n--- Remove Equipment ---")
+            print("Available equipment:")
+            manager.display_inventory()
+            equipment = input("\nEnter equipment name to remove (use underscores for spaces): ").lower().replace(' ', '_')
+            manager.remove_equipment(equipment)
+        
+        elif choice == "5":
+            print("\n--- Usage Cost Report ---")
+            print("\nSales Report Options:")
+            print("1. All time usage cost")
+            print("2. Usage cost for specific date range")
+            
+            sub_choice = input("Enter choice: ")
+            
+            if sub_choice == "1":
+                total, usage_df = manager.calculate_usage()
+                print(f"\nTotal usage cost (all time): ${total:.2f}")
+                if not usage_df.empty:
+                    print("\nUsage breakdown by equipment:")
+                    equipment_usage = usage_df.groupby('Equipment')['Total'].sum().sort_values(ascending=False)
+                    print(equipment_usage.to_string())
+            
+            elif sub_choice == "2":
+                try:
+                    start = input("Enter start date (YYYY-MM-DD) or press Enter for no start date: ")
+                    end = input("Enter end date (YYYY-MM-DD) or press Enter for no end date: ")
+                    
+                    start_date = pd.to_datetime(start) if start else None
+                    end_date = pd.to_datetime(end) if end else None
+                    
+                    total, usage_df = manager.calculate_usage(start_date, end_date)
+                    print(f"\nTotal usage cost: ${total:.2f}")
+                except:
+                    print("Invalid date format.")
+        
+        elif choice == "6":
+            manager.display_inventory()
+        
+        elif choice == "7":
+            try:
+                n = int(input("How many recent transactions to show? (default 10): ") or "10")
+                manager.show_transactions(n)
+            except ValueError:
+                manager.show_transactions()
+        
+        elif choice == "8":
+            try:
+                threshold = int(input("Enter low stock threshold (default 10): ") or "10")
+                manager.get_low_stock_items(threshold)
+            except ValueError:
+                manager.get_low_stock_items()
+        
+        elif choice == "9":
+            print(f"Exiting hospital inventory system. Data saved to {manager.excel_file.absolute()}")
+            break
+        
+        else:
+            print("Invalid choice. Please try again.")
+
+if __name__ == "__main__":
+    main()
                         </pre>
                     </div>
                     <p>Tip: For desktop Excel saves, download the original version. Run: python hospital_supply_tracker.py</p>
