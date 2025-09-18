@@ -46,30 +46,31 @@ function updateDarkModeToggle(isDarkMode) {
 
 // Mobile Menu Toggle
 function initMobileMenu() {
-    const hamburger = document.querySelector('.hamburger');
+    const menuToggle = document.querySelector('.menu-toggle');
     const navMenu = document.querySelector('.nav-menu');
     const navLinks = document.querySelectorAll('.nav-menu a');
 
-    if (!hamburger || !navMenu) return;
+    if (!menuToggle || !navMenu) return;
 
-    hamburger.addEventListener('click', () => {
+    menuToggle.addEventListener('click', (e) => {
+        e.stopPropagation();  // Prevent bubbling to document click handler
         navMenu.classList.toggle('active');
-        hamburger.querySelector('i').className = navMenu.classList.contains('active') ? 'fas fa-times' : 'fas fa-bars';
+        menuToggle.classList.toggle('active');
     });
 
     // Close menu on link click
     navLinks.forEach(link => {
         link.addEventListener('click', () => {
             navMenu.classList.remove('active');
-            hamburger.querySelector('i').className = 'fas fa-bars';
+            menuToggle.classList.remove('active');
         });
     });
 
-    // Close on outside click (optional backdrop)
+    // Close on outside click
     document.addEventListener('click', (e) => {
-        if (!navMenu.contains(e.target) && !hamburger.contains(e.target)) {
+        if (!navMenu.contains(e.target) && !menuToggle.contains(e.target)) {
             navMenu.classList.remove('active');
-            hamburger.querySelector('i').className = 'fas fa-bars';
+            menuToggle.classList.remove('active');
         }
     });
 }
@@ -178,7 +179,8 @@ function showSuccessMessage(message = 'Message sent successfully!') {
 // Initialization
 document.addEventListener('DOMContentLoaded', () => {
     initDarkMode();
-    initMobileMenu(); // New: Init mobile menu
+    initMobileMenu();
+    updateNavbarBackground(); // New: Init mobile menu
     // Listen for theme changes from system
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
         if (!localStorage.getItem('theme')) {
