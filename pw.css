@@ -638,6 +638,12 @@ main {
 }
 
 /* Code Viewing Styles */
+.code-container {
+    max-height: 300px; /* Adjusted height for shorter display */
+    overflow-y: auto; /* Enable vertical scrolling */
+    margin: 1rem 0;
+}
+
 pre {
     background-color: var(--code-bg);
     color: var(--code-text);
@@ -647,7 +653,6 @@ pre {
     overflow-x: auto;
     white-space: pre-wrap;
     border: 1px solid var(--border);
-    margin: 1rem 0;
     line-height: 1.4;
 }
 
