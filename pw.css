@@ -166,17 +166,6 @@ main {
     margin-bottom: 3rem;
 }
 
-/* Centered Paragraphs in Sections (e.g., Connect Section) */
-.section p {
-    text-align: center;
-    margin-bottom: 2rem;
-    font-size: 1.1rem;
-    padding: 0 1rem; /* Side margins for breathing room */
-    max-width: 800px; /* Prevent over-wide lines */
-    margin-left: auto;
-    margin-right: auto;
-}
-
 /* Cards & Grids */
 .project-card, .about-grid, .leadership-grid, .projects-grid, .courses-grid {
     display: grid;
@@ -249,27 +238,13 @@ main {
     color: var(--accent);
 }
 
-/* Forms - Centered Connect Section */
-.connect-section {
-    text-align: center;
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 0 1rem;
-}
-
-.connect-section p {
-    text-align: center;
-    margin-bottom: 2rem;
-    font-size: 1.1rem;
-}
-
+/* Forms */
 form {
     max-width: 600px;
-    margin: 0 auto 2rem;
+    margin: 2rem auto;
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    width: 100%;
 }
 
 input, textarea {
@@ -279,14 +254,6 @@ input, textarea {
     background: var(--bg-primary);
     color: var(--text-primary);
     font-family: inherit;
-    width: 100%;
-    transition: var(--transition);
-}
-
-input:focus, textarea:focus {
-    outline: none;
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
 }
 
 button[type="submit"] {
@@ -298,7 +265,6 @@ button[type="submit"] {
     cursor: pointer;
     font-weight: 600;
     transition: var(--transition);
-    width: 100%;
 }
 
 button[type="submit"]:hover {
@@ -410,8 +376,9 @@ button[type="submit"]:hover {
     padding: 1rem;
     margin: 1rem 0;
     border: 1px solid var(--border);
-    max-height: 500px; /* Overall container cap */
+    max-height: 400px; /* Strict fixed max height */
     overflow: hidden;
+    position: relative;
 }
 
 .code-actions {
@@ -430,25 +397,32 @@ button[type="submit"]:hover {
     cursor: pointer;
     font-size: 0.9rem;
     transition: var(--transition);
+    min-height: 40px;
+    flex: 1; /* Equal width on mobile */
+    min-width: 100px; /* Prevent squish */
 }
-
 .copy-btn:hover, .download-btn:hover {
     background: #0056b3;
     transform: translateY(-1px);
 }
 
 pre {
-    max-height: 400px; /* Scrollable code height cap */
+    height: 300px; /* Fixed height for pre */
+    max-height: 300px; /* Enforce cap */
     overflow-y: auto; /* Vertical scroll only */
     overflow-x: auto; /* Horizontal if lines wrap */
     margin: 0;
+    padding: 1rem; /* Extra touch padding */
     padding-right: 1rem; /* Space for scrollbar */
     scrollbar-width: thin; /* Firefox slim scrollbar */
     scrollbar-color: var(--accent) var(--border);
+    -webkit-overflow-scrolling: touch; /* Smooth iOS scroll */
+    word-wrap: break-word; /* Break long lines on mobile */
+    white-space: pre-wrap; /* Allow wrapping */
 }
-
 pre::-webkit-scrollbar {
     width: 8px; /* Chrome/Safari slim scrollbar */
+    height: 8px;
 }
 
 pre::-webkit-scrollbar-track {
@@ -475,9 +449,22 @@ pre::-webkit-scrollbar-thumb:hover {
 
 code {
     font-size: 0.85rem;
-    line-height: 1.4;
+    line-height: 1.5; /* Better readability on small screens */
     display: block;
-    white-space: pre; /* Preserve formatting */
+    white-space: pre-wrap; /* Preserve but wrap */
+}
+
+/* Mobile: Slightly taller but capped */
+@media (max-width: 768px) {
+    .code-view {
+        max-height: 350px;
+    }
+    
+    pre {
+        height: 250px;
+        max-height: 250px;
+        font-size: 0.8rem;
+    }
 }
 
 /* Tables (for Transcript) */
@@ -558,24 +545,6 @@ code {
 
     .code-actions {
         flex-direction: column;
-    }
-
-    pre {
-        max-height: 300px; /* Tighter on mobile */
-    }
-
-    .code-view {
-        max-height: 400px;
-    }
-
-    .connect-section p {
-        font-size: 1rem;
-        padding: 0 1rem;
-    }
-
-    .section p {
-        font-size: 1rem;
-        padding: 0 0.5rem;
     }
 }
 

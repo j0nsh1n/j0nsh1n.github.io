@@ -9,7 +9,7 @@ function initDarkMode() {
         updateDarkModeToggle(false);
     }
     
-    // Wait for DOM and add toggle if missing
+    // Wait for DOM and add toggle if missing (now handles mobile too)
     function addToggleIfNeeded() {
         const navMenu = document.querySelector('.nav-menu');
         if (navMenu && !document.querySelector('.dark-mode-toggle')) {
@@ -42,6 +42,36 @@ function updateDarkModeToggle(isDarkMode) {
     if (icon) {
         icon.className = `fas ${isDarkMode ? 'fa-sun' : 'fa-moon'} dark-mode-icon`;
     }
+}
+
+// Mobile Menu Toggle
+function initMobileMenu() {
+    const hamburger = document.querySelector('.hamburger');
+    const navMenu = document.querySelector('.nav-menu');
+    const navLinks = document.querySelectorAll('.nav-menu a');
+
+    if (!hamburger || !navMenu) return;
+
+    hamburger.addEventListener('click', () => {
+        navMenu.classList.toggle('active');
+        hamburger.querySelector('i').className = navMenu.classList.contains('active') ? 'fas fa-times' : 'fas fa-bars';
+    });
+
+    // Close menu on link click
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            navMenu.classList.remove('active');
+            hamburger.querySelector('i').className = 'fas fa-bars';
+        });
+    });
+
+    // Close on outside click (optional backdrop)
+    document.addEventListener('click', (e) => {
+        if (!navMenu.contains(e.target) && !hamburger.contains(e.target)) {
+            navMenu.classList.remove('active');
+            hamburger.querySelector('i').className = 'fas fa-bars';
+        }
+    });
 }
 
 // Navbar Scroll Effect (Theme-Aware)
@@ -148,6 +178,7 @@ function showSuccessMessage(message = 'Message sent successfully!') {
 // Initialization
 document.addEventListener('DOMContentLoaded', () => {
     initDarkMode();
+    initMobileMenu(); // New: Init mobile menu
     // Listen for theme changes from system
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
         if (!localStorage.getItem('theme')) {
