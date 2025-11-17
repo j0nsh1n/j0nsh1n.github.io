@@ -90,19 +90,26 @@ function updateNavbarBackground() {
 window.addEventListener('scroll', updateNavbarBackground);
 
 // EmailJS Form Handling
-document.getElementById('contactForm')?.addEventListener('submit', function(event) {
-    event.preventDefault();
-    
-    // Replace with your EmailJS Service ID and Template ID
-    emailjs.sendForm("service_mdo0jec","template_2vv226u", this)
-        .then(function() {
-            showSuccessMessage('Message sent successfully!');
-            document.getElementById('contactForm').reset();
-        }, function(error) {
-            console.log('Failed to send:', error);
-            showSuccessMessage('Oops! Something went wrong. Try again?');
-        });
-});
+function initContactForm() {
+    const contactForm = document.getElementById('contactForm');
+    if (!contactForm || typeof emailjs === 'undefined') return;
+
+    emailjs.init('H0eVtHxxPc_vQJUP2');
+
+    contactForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        emailjs.sendForm('service_mdo0jec', 'template_2vv226u', this)
+            .then(() => {
+                showSuccessMessage('Message sent successfully!');
+                contactForm.reset();
+            })
+            .catch((error) => {
+                console.log('Failed to send:', error);
+                showSuccessMessage('Oops! Something went wrong. Try again?');
+            });
+    });
+}
 
 // Existing Discord Popup (Enhanced for Social Button)
 function showDiscordPopup(username) {
@@ -145,17 +152,6 @@ function showDiscordPopup(username) {
     });
 }
 
-function toggleBio() {
-    const overlay = document.getElementById('bioOverlay');
-    const container = document.querySelector('.profile-pic-container');
-    if (overlay) {
-        overlay.classList.toggle('show');
-    }
-    if (container) {
-        container.classList.toggle('active');
-    }
-}
-
 function showSuccessMessage(message = 'Message sent successfully!') {
     // Remove existing message if any
     const existing = document.querySelector('.success-message');
@@ -181,6 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initDarkMode();
     initMobileMenu();
     updateNavbarBackground(); // New: Init mobile menu
+    initContactForm();
     // Listen for theme changes from system
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
         if (!localStorage.getItem('theme')) {
