@@ -262,20 +262,32 @@ main {
 }
 
 /* Cards & Grids */
-.project-card, .about-grid, .leadership-grid, .projects-grid, .courses-grid {
+.about-grid, .leadership-grid, .projects-grid, .courses-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 2rem;
     margin-bottom: 3rem;
 }
 
+/* Project cards stack their contents in one column, so a description never
+   sits beside its own heading. Kept as a grid (not a block) because the grid
+   track is what stops a wide code sample from widening the whole page. */
 .project-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
     background: var(--bg-secondary);
     padding: 2rem;
     border-radius: 12px;
     margin-bottom: 2rem;
     border: 1px solid var(--border);
     transition: var(--transition);
+}
+
+/* Repository URLs are long single tokens; let them wrap instead of pushing
+   the page sideways on a phone. */
+.project-card a {
+    overflow-wrap: anywhere;
 }
 
 .project-card:hover {
