@@ -376,13 +376,23 @@ if __name__ == "__main__":
                 </div>
 
                 <div class="project-card">
-                    <h2>Project 3: Nurse AI (IN DEVELOPMENT)</h2>
-                    <p>This is a program that I currently am brainstorming on for creating a new AI that can help people become aware of potential illnesses they might have, and also walk them through how to treat minor injuries. This is not to be used in dire situations. I will update this project and attach the github link I use for this project at some point.</p>
+                    <h2>Project 3: LitSieve</h2>
+                    <p>A multi-user web app that helps students get started on a research paper. You give it your topics, and it pulls abstracts from 17 free public academic databases at once—PubMed, Europe PMC, arXiv, OpenAlex, ClinicalTrials.gov, CrossRef, ERIC, bioRxiv, medRxiv and more—as a background job you can watch, cancel, and retry.</p>
+                    <p>Once the papers are in, it turns every abstract into a semantic embedding, so the app can rank papers by what they actually mean instead of just keyword overlap. That powers hybrid search (meaning plus exact words), near-duplicate detection across sources, topic clustering, and a screening pass that ranks your collection against your research question so you can throw out the papers that aren't about your topic. What survives can be exported as RIS straight into Zotero, EndNote, or Mendeley.</p>
+                    <p>Every account gets a private workspace with multiple libraries, so separate projects don't mix. It runs Simple mode by default—get papers, then search—with an Advanced mode that keeps every control. There's also a guest demo that loads sample papers so you can try it without making an account.</p>
+                    <p>Built with Python and FastAPI, using sentence-transformers for the embeddings, FAISS for fast similarity search and duplicate detection, and scikit-learn and HDBSCAN for clustering. Data lives in per-user SQLite, sessions use JWT with bcrypt-hashed passwords and CSRF protection, and databases can optionally be encrypted at rest with SQLCipher. Currently on version 5.0.0.</p>
+                    <p><strong>Important:</strong> LitSieve is a starting point, not a finished literature search. It only sees publicly accessible databases, so it is not a replacement for your school library or a librarian, and nothing it returns is medical advice. Always check important papers in the original source.</p>
+                    <p><a href="https://github.com/j0nsh1n/LitSieve">https://github.com/j0nsh1n/LitSieve</a></p>
                 </div>
 
                 <div class="project-card">
-                    <h2>Project 4: Nutrition Guide (IN DEVELOPMENT)</h2>
-                    <p>This is a project that I'm still brainstorming how to execute, will give more information here in the near future.</p>
+                    <h2>Project 4: ASD Insight Companion (IN DEVELOPMENT)</h2>
+                    <p>A research prototype that runs an anonymous, consent-gated study session in the browser: a consent screen requiring three separate acknowledgements, a short intake, a timed questionnaire presented one item at a time, and then an optional attention task where the participant watches a short video clip.</p>
+                    <p>The privacy design is the whole point of the project. If the participant allows the camera, face tracking runs entirely on their own device using MediaPipe's Face Landmarker, and only aggregate numbers ever leave the browser—things like tracking-coverage ratios, how long tracking stayed valid, and blink and head-motion averages. No video frames and no images are uploaded, ever. The API schema forbids extra fields outright, so a request carrying frames is rejected rather than quietly accepted. Even the MediaPipe model files are served from the app itself, so running a session doesn't call out to a third-party CDN.</p>
+                    <p>The camera is optional. A participant can decline it and still complete the whole session, and skipping the video clip is allowed and isn't held against them. The clip ships with captions, a descriptive transcript, and keyboard controls, and accessibility preferences chosen at intake—larger text, reduced motion, screen-reader hints—are applied to the rest of the interface.</p>
+                    <p>The backend is FastAPI with Pydantic and SQLite; the frontend is React 19 with TypeScript and Vite. CI runs ruff, mypy in strict mode, and pytest on the backend, oxlint and vitest on the frontend, plus CodeQL scanning. It's currently mid-build at Phase 4C, and the question bank is a development placeholder while I wait on written permission to use a licensed instrument.</p>
+                    <p><strong>Important:</strong> this is a research prototype and is explicitly <em>not</em> a diagnostic tool. It does not produce an autism score, an autism risk rating, or anything resembling one—the quality flag it reports describes how well the camera tracked a face, nothing more. Only a qualified clinician can diagnose autism.</p>
+                    <p><a href="https://github.com/j0nsh1n/asd-insight-companion">https://github.com/j0nsh1n/asd-insight-companion</a></p>
                 </div>
             </div>
         </section>
