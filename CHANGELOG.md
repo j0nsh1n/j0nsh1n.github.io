@@ -8,6 +8,43 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
+- FlexWeek, Clinical Evidence Assistant, Daily Scheduler, and Sales Tracker on
+  the Projects page, each with its status, stack, and a source link.
+- A short introduction on the home page.
+- Page descriptions and link-preview tags on every page, and the current page
+  is marked in the nav for screen readers.
+- Visible labels on the contact form fields.
+
+### Changed
+
+- LitSieve card updated to version 5.5.0 and its Explain this study feature;
+  ASD Insight Companion card updated to its current status.
+- Project cards show status on its own line instead of in the heading, and
+  project copy no longer uses em dashes.
+- Profile photo resized to 400x400 with metadata removed; the home page loads
+  about 6.6 MB less.
+- Awards page shows an honest "in progress" state instead of a blank card.
+- Higher-contrast secondary text, buttons, hover states, and messages in both
+  themes.
+
+### Fixed
+
+- Home page mobile menu now opens on the first tap (a duplicate handler was
+  toggling it closed again).
+- Projects page no longer scrolls sideways on a 380px phone.
+- Contact form now says clearly when a message was not sent, including when the
+  email service is blocked, and failures are styled as errors.
+- No favicon 404 in the browser console.
+
+### Removed
+
+- Hospital Supply Tracker code sample, which showed a hardcoded demo login and
+  a local file path. The project is now listed under Earlier work.
+
+## 2026-08-14
+
+### Added
+
 - **LitSieve** on the Projects page: a multi-user web app that pulls abstracts
   from 17 free public academic databases at once, ranks and de-duplicates them
   with semantic embeddings, and exports citations as RIS. Includes its stack,

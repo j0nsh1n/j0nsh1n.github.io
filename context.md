@@ -9,27 +9,26 @@
 - Lint / types / tests / CI: **none configured**. Per agents.md these
   Definition-of-Done items are report-only here. Verification is manual, per
   spec.md's Validation section.
-- Verified 2026-08-14 with headless Chromium against a local static server, at
-  380 / 768 / 1280px: no element overflows the viewport on `projects.html`,
-  `transcript.html`, `awards.html`, or `activities.html`, in light or dark mode.
+- Verified 2026-09-24 with headless Chromium against a local static server,
+  at 380 and 1280px in light and dark mode: every page has scrollWidth equal to
+  the viewport, the mobile menu opens on one tap on all five pages, no console
+  errors, and the contact form shows an error toast when EmailJS is blocked.
 - Known gaps:
-  - `index.html` has one pre-existing horizontal overflow — `img.profile-img`
-    measures at its 6152px natural width. Present identically on `main` before
-    this session's changes; not caused by them, not yet fixed.
-  - `Face.jpg` is 6.7 MB and is displayed at 200×200.
-  - `awards.html` renders one award card whose heading, body, and date are all
-    empty strings.
+  - `awards.html` has no awards yet; it shows an "in progress" card.
   - `transcript.html` coursework table ends at one sophomore-year course.
+  - `activities.html` has no 2026-27 entries.
   - The nav and `<head>` block are duplicated by hand across all five pages.
+  - EmailJS SDK in use logs as deprecated upstream; v4 moves the CDN host
+    (spec.md drift, not yet approved).
 
 ## Repo Landmarks
 | Path | Role |
 |------|------|
 | `index.html` | Hero, about cards, fun facts, EmailJS contact form, social links |
-| `projects.html` | Project catalog; card per project; embedded code sample |
+| `projects.html` | Project catalog; card per project with status line |
 | `activities.html` | Leadership, clubs, athletics, community service |
 | `transcript.html` | GPA, test scores, coursework table |
-| `awards.html` | Awards and certificates grid (one empty card) |
+| `awards.html` | Awards and certificates (in-progress state) |
 | `pw.css` | Theme tokens (`:root` / `.dark-mode`), layout, components, media queries |
 | `pw.js` | Dark mode, mobile menu, navbar scroll state, EmailJS submit, Discord popup, toasts |
 | `Face.jpg` | Profile photo |
@@ -74,13 +73,13 @@ fonts         -> Inter via Google Fonts (@import at top of pw.css)
   2026-08-14, and a dead link on a portfolio site is worse than no link.
 
 ## Session Handoff
-- **Date:** 2026-08-14
-- **Branch:** `claude/litsieve-asd-companion-updates-7phd1q`
-- **Done:** Adopted the five governance files (agents.md verbatim from
-  LitSieve). Replaced the two brainstorm placeholders on `projects.html`
-  (Nurse AI, Nutrition Guide) with **LitSieve** and the **ASD Insight
-  Companion**, written from those repositories' README / CHANGELOG / context.
-  Fixed the `.project-card` layout so multi-paragraph cards stack and no
-  longer overflow at 380px.
-- **Next:** Human review. Open items are listed in roadmap.md's backlog —
-  nearest are the empty awards card and the missing junior-year coursework.
+- **Date:** 2026-09-24
+- **Branch:** `feat/portfolio-refresh`
+- **Done:** Fixed the home mobile menu double toggle, projects overflow at
+  380px, silent contact-form failures, low-contrast tokens, and favicon 404.
+  Resized and stripped `Face.jpg`. Added four public projects and refreshed
+  LitSieve and ASD copy from their repos. Removed the Hospital Supply Tracker
+  code sample. Honest awards state. Head metadata and `aria-current` on all
+  pages.
+- **Next:** Owner review of the PR (photo crop, teammate wording, intro copy),
+  then transcript, activities, and awards facts from the owner.
