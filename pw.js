@@ -92,21 +92,30 @@ window.addEventListener('scroll', updateNavbarBackground);
 // EmailJS Form Handling
 function initContactForm() {
     const contactForm = document.getElementById('contactForm');
-    if (!contactForm || typeof emailjs === 'undefined') return;
+    if (!contactForm) return;
 
-    emailjs.init('H0eVtHxxPc_vQJUP2');
+    // The EmailJS script can be blocked by school filters or ad blockers.
+    // Only initialize when it loaded; the submit handler reports the failure.
+    if (typeof emailjs !== 'undefined') {
+        emailjs.init('H0eVtHxxPc_vQJUP2');
+    }
 
     contactForm.addEventListener('submit', function(event) {
         event.preventDefault();
 
+        if (typeof emailjs === 'undefined') {
+            showSuccessMessage('Message not sent: the email service did not load. Please reach me on LinkedIn instead.', true);
+            return;
+        }
+
         emailjs.sendForm('service_mdo0jec', 'template_2vv226u', this)
             .then(() => {
-                showSuccessMessage('Message sent successfully!');
+                showSuccessMessage('Message sent. Thanks for reaching out!');
                 contactForm.reset();
             })
             .catch((error) => {
-                console.log('Failed to send:', error);
-                showSuccessMessage('Oops! Something went wrong. Try again?');
+                console.error('EmailJS send failed:', error);
+                showSuccessMessage('Message not sent. Please try again, or reach me on LinkedIn.', true);
             });
     });
 }
@@ -152,24 +161,25 @@ function showDiscordPopup(username) {
     });
 }
 
-function showSuccessMessage(message = 'Message sent successfully!') {
+function showSuccessMessage(message = 'Message sent.', isError = false) {
     // Remove existing message if any
     const existing = document.querySelector('.success-message');
     if (existing) existing.remove();
 
-    const successDiv = document.createElement('div');
-    successDiv.className = 'success-message';
-    successDiv.innerHTML = `✅ ${message}`;
-    document.body.appendChild(successDiv);
+    const toast = document.createElement('div');
+    toast.className = isError ? 'success-message error-message' : 'success-message';
+    toast.setAttribute('role', isError ? 'alert' : 'status');
+    toast.textContent = message;
+    document.body.appendChild(toast);
 
     // Show animation
-    requestAnimationFrame(() => successDiv.classList.add('show'));
+    requestAnimationFrame(() => toast.classList.add('show'));
 
-    // Auto-hide after 3s
+    // Auto-hide; errors stay up longer so they can be read
     setTimeout(() => {
-        successDiv.classList.add('slideOutRight');
-        setTimeout(() => successDiv.remove(), 300);
-    }, 3000);
+        toast.classList.add('slideOutRight');
+        setTimeout(() => toast.remove(), 300);
+    }, isError ? 6000 : 3000);
 }
 
 // Initialization
