@@ -90,24 +90,35 @@ function updateNavbarBackground() {
 window.addEventListener('scroll', updateNavbarBackground);
 
 // EmailJS Form Handling
-document.getElementById('contactForm')?.addEventListener('submit', function(event) {
-    event.preventDefault();
+function initContactForm() {
+    const contactForm = document.getElementById('contactForm');
+    if (!contactForm) return;
 
     // The EmailJS script can be blocked by school filters or ad blockers.
-    if (typeof emailjs === 'undefined') {
-        showSuccessMessage('Message not sent: the email service did not load. Please reach me on LinkedIn instead.', true);
-        return;
+    // Only initialize when it loaded; the submit handler reports the failure.
+    if (typeof emailjs !== 'undefined') {
+        emailjs.init('H0eVtHxxPc_vQJUP2');
     }
 
-    emailjs.sendForm("service_mdo0jec", "template_2vv226u", this)
-        .then(function() {
-            showSuccessMessage('Message sent. Thanks for reaching out!');
-            document.getElementById('contactForm').reset();
-        }, function(error) {
-            console.error('EmailJS send failed:', error);
-            showSuccessMessage('Message not sent. Please try again, or reach me on LinkedIn.', true);
-        });
-});
+    contactForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        if (typeof emailjs === 'undefined') {
+            showSuccessMessage('Message not sent: the email service did not load. Please reach me on LinkedIn instead.', true);
+            return;
+        }
+
+        emailjs.sendForm('service_mdo0jec', 'template_2vv226u', this)
+            .then(() => {
+                showSuccessMessage('Message sent. Thanks for reaching out!');
+                contactForm.reset();
+            })
+            .catch((error) => {
+                console.error('EmailJS send failed:', error);
+                showSuccessMessage('Message not sent. Please try again, or reach me on LinkedIn.', true);
+            });
+    });
+}
 
 // Existing Discord Popup (Enhanced for Social Button)
 function showDiscordPopup(username) {
@@ -150,17 +161,6 @@ function showDiscordPopup(username) {
     });
 }
 
-function toggleBio() {
-    const overlay = document.getElementById('bioOverlay');
-    const container = document.querySelector('.profile-pic-container');
-    if (overlay) {
-        overlay.classList.toggle('show');
-    }
-    if (container) {
-        container.classList.toggle('active');
-    }
-}
-
 function showSuccessMessage(message = 'Message sent.', isError = false) {
     // Remove existing message if any
     const existing = document.querySelector('.success-message');
@@ -187,6 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initDarkMode();
     initMobileMenu();
     updateNavbarBackground(); // New: Init mobile menu
+    initContactForm();
     // Listen for theme changes from system
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
         if (!localStorage.getItem('theme')) {

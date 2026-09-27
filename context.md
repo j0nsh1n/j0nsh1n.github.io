@@ -56,7 +56,10 @@ fonts         -> Inter via Google Fonts (@import at top of pw.css)
   page's nav, so a new page picks it up by including the script.
 - `pw.js` guards every element lookup (`?.`, early return) because it runs on
   pages that have no contact form and no profile image.
-- The EmailJS **public** key sitting in `index.html` is intended — EmailJS
+- `index.html` loads the EmailJS CDN script **before** `pw.js`, and
+  `pw.js` `initContactForm()` initializes EmailJS only if it loaded, so a
+  blocked CDN still gets an error toast on submit instead of a silent no-op.
+- The EmailJS **public** key sitting in `pw.js` is intended — EmailJS
   treats it as publishable. The private key must never appear in this repo.
 - `.project-card` is a **single-column grid**, not a block. The grid track is
   what keeps a wide `<pre>` code sample from widening the whole page; as a
@@ -73,13 +76,11 @@ fonts         -> Inter via Google Fonts (@import at top of pw.css)
   2026-08-14, and a dead link on a portfolio site is worse than no link.
 
 ## Session Handoff
-- **Date:** 2026-09-24
-- **Branch:** `feat/portfolio-refresh`
-- **Done:** Fixed the home mobile menu double toggle, projects overflow at
-  380px, silent contact-form failures, low-contrast tokens, and favicon 404.
-  Resized and stripped `Face.jpg`. Added four public projects and refreshed
-  LitSieve and ASD copy from their repos. Removed the Hospital Supply Tracker
-  code sample. Honest awards state. Head metadata and `aria-current` on all
-  pages.
-- **Next:** Owner review of the PR (photo crop, teammate wording, intro copy),
-  then transcript, activities, and awards facts from the owner.
+- **Date:** 2026-09-27
+- **Branch:** `codex/refactor-code-to-remove-duplicates` (PR #1)
+- **Done:** Merged main into PR #1 and resolved conflicts in `index.html`
+  and `pw.js`. Kept main's visible form-failure handling; adopted the PR's
+  EmailJS init inside `pw.js`, CDN-before-`pw.js` load order, and removal of
+  the unused `toggleBio()` helper.
+- **Next:** Owner review and merge of PR #1, then transcript, activities, and
+  awards facts from the owner.
