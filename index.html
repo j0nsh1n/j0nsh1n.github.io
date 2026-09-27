@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jonathan Shin</title>
+    <meta name="description" content="Jonathan Shin, high school student (Class of 2027) building software for students, research, and health care.">
+    <meta property="og:title" content="Jonathan Shin">
+    <meta property="og:description" content="Jonathan Shin, high school student (Class of 2027) building software for students, research, and health care.">
+    <meta property="og:url" content="https://j0nsh1n.github.io/">
+    <meta property="og:type" content="website">
+    <link rel="icon" href="data:,">
     <link rel="stylesheet" href="pw.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -13,7 +19,7 @@
         <div class="nav-container">
             <div class="logo">Jonathan Shin</div>
             <ul class="nav-menu">
-                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html" aria-current="page">Home</a></li>
                 <li><a href="activities.html">Activities</a></li>
                 <li><a href="projects.html">Projects</a></li>
                 <li><a href="transcript.html">Transcript</a></li>
@@ -30,17 +36,19 @@
             <div class="hero-header">
                 <div class="hero-text">
                     <h1>Hi, I'm Jonathan Shin</h1>
-                    <p class="subtitle">High School Student | Future Medical Practitioner? | Class of 2027</p>
+                    <p class="subtitle">High school senior, Class of 2027 | Aspiring anesthesiologist or nurse | I build software for students, research, and health care</p>
                 </div>
                 <div class="profile-pic-container">
-                    <img src="Face.jpg" alt="Jonathan Shin" class="profile-img">
+                    <img src="Face.jpg" alt="Jonathan Shin" class="profile-img" width="200" height="200" decoding="async">
                 </div>
             </div>
+
+            <p class="intro">I'm interested in medicine and in the software that supports it. I build tools around problems I run into as a student: a planner that explains how it fits homework into a busy week, a research-paper finder, and a study aid that shows how strong a medical study's evidence is. I use AI coding assistants to help draft code and text, and I review, test, and approve every change myself.</p>
 
             <div class="about-grid">
                 <div class="card">
                     <h3>Academic Interests</h3>
-                    <p>Biology, Chemistry, Physics, Computer Science, Engineering, Math</p>
+                    <p>Biochemistry, Biology, Chemistry, Physics, Computer Science, Engineering, Math</p>
                 </div>
                 <div class="card">
                     <h3>Goals & Dreams</h3>
@@ -48,7 +56,7 @@
                 </div>
                 <div class="card">
                     <h3>Hobbies</h3>
-                    <p>Coding, Gaming, Reading, Computer Hardware</p>
+                    <p>Coding, Linux, Computer Hardware, Digital Art, Gaming, Reading</p>
                 </div>
             </div>
 
@@ -72,9 +80,12 @@
             <h2>Let's Connect!</h2>
             <p>Have questions? Want to collaborate on a project? Just want to say hi? Drop me a message!</p>
             <form id="contactForm">
-                <input type="text" name="name" placeholder="Your Name" required>
-                <input type="email" name="email" placeholder="Your Email" required>
-                <textarea name="message" placeholder="Your Message" required></textarea>
+                <label for="cf-name">Name</label>
+                <input id="cf-name" type="text" name="name" autocomplete="name" required>
+                <label for="cf-email">Email</label>
+                <input id="cf-email" type="email" name="email" autocomplete="email" required>
+                <label for="cf-message">Message</label>
+                <textarea id="cf-message" name="message" required></textarea>
                 <button type="submit">Send Message</button>
             </form>
             <p>Or reach out via:</p>
@@ -88,13 +99,11 @@
     <script src="pw.js"></script>
     <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
     <script>
-        emailjs.init("H0eVtHxxPc_vQJUP2"); // Replace with your EmailJS user ID
-        const menuToggle = document.querySelector('.menu-toggle');
-        const navMenu = document.querySelector('.nav-menu');
-        menuToggle.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
-            menuToggle.classList.toggle('active');
-        });
+        // Guarded so a blocked EmailJS script does not throw on load.
+        // The mobile menu is handled by pw.js.
+        if (window.emailjs) {
+            emailjs.init("H0eVtHxxPc_vQJUP2");
+        }
     </script>
 </body>
 </html>
