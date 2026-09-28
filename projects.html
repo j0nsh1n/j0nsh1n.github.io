@@ -43,7 +43,7 @@
             <div class="section">
                 <div class="project-card">
                     <h2>FlexWeek</h2>
-                    <p class="project-status">Status: In active development as a 2026 Congressional App Challenge entry (v0.14.3, September 2026). Windows and Linux desktop app.</p>
+                    <p class="project-status">Status: In active development as a 2026 Congressional App Challenge entry. Windows and Linux desktop app.</p>
                     <p>FlexWeek plans a student's week. You enter the things that can't move, like school, practice, and lessons, plus your homework and when it is due. A constraint solver then places each homework session in free time before its deadline. When something can't fit or has to move, FlexWeek tells you why in plain English instead of quietly reshuffling your week.</p>
                     <p>It runs as a single desktop app with its own local backend, so there is no server to set up, and it uses no AI service while it runs. Accounts, saved weeks, light and dark themes, reminders, and drag-to-edit on the calendar all work today.</p>
                     <p>Built with Python, FastAPI, SQLite, and a Qt (PySide6) desktop window. I am building it with a teammate. AI coding assistants helped during development, and the project's README says so.</p>
@@ -53,18 +53,19 @@
 
                 <div class="project-card">
                     <h2>LitSieve</h2>
-                    <p class="project-status">Status: Version 5.5.0, actively maintained.</p>
+                    <p class="project-status">Status: Live and actively maintained.</p>
                     <p>A multi-user web app that helps students get started on a research paper. You give it your topics, and it collects abstracts from 17 free public academic databases at once, including PubMed, Europe PMC, arXiv, OpenAlex, ClinicalTrials.gov, CrossRef, ERIC, bioRxiv, and medRxiv. The search runs as a background job you can watch, cancel, and retry.</p>
                     <p>Each abstract becomes a semantic embedding, so papers are ranked by meaning and not only by matching words. That powers hybrid search, near-duplicate detection across sources, topic clustering, and a screening pass that ranks your collection against your research question. What survives can be exported as RIS into Zotero, EndNote, or Mendeley.</p>
                     <p>Explain this study is an optional feature that gives a plain-language reading of one abstract you already have. Automatic checks flag problems such as dropped numbers or lost hedging. They warn you, but they never claim the explanation is verified.</p>
                     <p>Built with Python and FastAPI, sentence-transformers, FAISS, scikit-learn, and HDBSCAN. Data lives in per-user SQLite, with JWT sessions, bcrypt-hashed passwords, and CSRF protection.</p>
                     <p><strong>Important:</strong> LitSieve is a starting point, not a finished literature search. It only sees publicly accessible databases, so it is not a replacement for your school library or a librarian, and nothing it returns is medical advice. Always check important papers in the original source.</p>
+                    <p><a href="https://www.litpilot.org">Try LitSieve at www.litpilot.org</a></p>
                     <p><a href="https://github.com/j0nsh1n/LitSieve">https://github.com/j0nsh1n/LitSieve</a></p>
                 </div>
 
                 <div class="project-card">
                     <h2>Clinical Evidence Assistant</h2>
-                    <p class="project-status">Status: Version 1.1.0.</p>
+                    <p class="project-status">Status: Released.</p>
                     <p>A study aid for reading medical research. Search Europe PMC or PubMed, open an article, and it pulls out the study design, population, sample size, and key finding, writes a plain-language summary, and gives a provisional evidence level from A to D with caution notes, such as "observational design limits causal inference."</p>
                     <p>The analysis is rule-based and transparent. On a labelled set of 26 synthetic test abstracts it identified the study design correctly for 23. The project has 171 automated tests. Built with Python, FastAPI, and Pydantic.</p>
                     <p><strong>Important:</strong> this is not medical advice. Evidence levels are estimated from the abstract only, not from a full critical appraisal. It is a study aid, not a clinical or diagnostic tool.</p>
@@ -84,7 +85,7 @@
 
                 <div class="project-card">
                     <h2>Daily Scheduler</h2>
-                    <p class="project-status">Status: Version 4.6.5. Windows and Linux.</p>
+                    <p class="project-status">Status: Released. Windows and Linux.</p>
                     <p>A desktop daily planner with an optional AI assistant that runs entirely on your own computer through Ollama. You can drag to create, move, and resize blocks on a timeline, or ask the assistant to shift the rest of your day. The planner works fully offline without the assistant, and there is no cloud and no telemetry.</p>
                     <p>Built with Python and PySide6 (Qt 6). Open source under GPL-3.0.</p>
                     <p><a href="https://github.com/j0nsh1n/Local-Schedule-Assistant">https://github.com/j0nsh1n/Local-Schedule-Assistant</a></p>
@@ -92,7 +93,7 @@
 
                 <div class="project-card">
                     <h2>Sales Tracker</h2>
-                    <p class="project-status">Status: Version 0.2.0 (September 2026).</p>
+                    <p class="project-status">Status: Early release.</p>
                     <p>A small ledger for selling at a stall or fundraiser: set up a product, log who bought how many, and check people off as they collect their order. A Money page compares the cash you should have with the bills you count yourself. It works as a desktop app or from the command line, and both share one local SQLite file.</p>
                     <p>It is a sales log with fulfillment tracking, not accounting software or a payment processor.</p>
                     <p><a href="https://github.com/j0nsh1n/sales-tracker">https://github.com/j0nsh1n/sales-tracker</a></p>

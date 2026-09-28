@@ -31,14 +31,8 @@ commits.
 - Status: [x] 2026-08-14
 
 ## Backlog (unscheduled)
-- Awards page still has one empty card with no award in it — either fill it or
-  give the page an honest empty state
 - Transcript coursework table stops mid-sophomore-year; junior year is missing
 - No CI: an HTML validator + link checker on push would catch broken links and
   malformed markup that nothing currently checks
 - Duplicated nav and `<head>` markup across five pages drifts (each page is
   edited by hand); no fix proposed yet that keeps "no build step"
-- `Face.jpg` is 6.7 MB and is loaded on the home page at 200×200 — a resized
-  copy would cut the page weight substantially
-- Add the remaining public repositories (Clinical Evidence Assistant, Daily
-  Scheduler) to the projects page if the owner wants them shown

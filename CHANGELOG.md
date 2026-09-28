@@ -8,6 +8,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
+- LitSieve card links to the live site at www.litpilot.org.
+
+### Changed
+
+- Project status lines no longer show version numbers, which went out of date
+  within days of each release. Each project's repository shows its current
+  version.
+
+## 2026-09-27
+
+### Added
+
 - FlexWeek, Clinical Evidence Assistant, Daily Scheduler, and Sales Tracker on
   the Projects page, each with its status, stack, and a source link.
 - A short introduction on the home page.
