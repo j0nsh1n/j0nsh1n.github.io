@@ -30,18 +30,8 @@ commits.
   repository and links to it, and no card is a placeholder for unstarted work
 - Status: [x] 2026-08-14
 
-## Phase 3 — Fact refresh from owner records
-- Tasks:
-  - Fill `transcript.html` through junior year and mark senior year in progress
-  - Replace the 1330 SAT and 4.0 / 4.34 GPA with current working figures
-  - Put real awards on `awards.html`
-  - Add 2026-27 leadership, KEEN, and corrected Cedars hours on `activities.html`
-- Complete when: public pages match the Academic Resume and Senior Brag Sheet
-  without copying private counselor notes onto the site
-- Status: [x] 2026-09-28
-
 ## Backlog (unscheduled)
-- Official stamped transcript may still replace the working GPA/grade figures
+- Transcript coursework table stops mid-sophomore-year; junior year is missing
 - No CI: an HTML validator + link checker on push would catch broken links and
   malformed markup that nothing currently checks
 - Duplicated nav and `<head>` markup across five pages drifts (each page is
