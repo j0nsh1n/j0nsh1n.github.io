@@ -8,13 +8,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
-- LitSieve card links to the live site at www.litpilot.org.
+- Full high school coursework through junior year, plus senior-year courses marked in progress, on the Transcript page.
+- College-level and summer programs on the Transcript page (UC Scout APs, UCLA pre-med, Rice medicine, MEDSTEMPowered, Georgetown, Johns Hopkins CTY, UCSD cognitive psychology).
+- Awards: Congressional Award Silver Medal, STEM Innovation Challenge Certificate of Merit, College Board National Recognition, ISRJ DNA Day Essay Qualifier, and President's Award.
+- Senior-year leadership: Student Store Chair and Honor Council.
+- Clubs and service missing from the old page: Science Research Club, GYM Medical and STEM clubs, KEEN Youth Coach, soccer and volleyball manager roles.
+- Intraoperative Ventilation and Anesthesia Monitor listed as an in-progress proof of concept (source not public).
 
 ### Changed
 
-- Project status lines no longer show version numbers, which went out of date
-  within days of each release. Each project's repository shows its current
-  version.
+- GPA updated from 4.0 / 4.34 to 3.97 unweighted / 4.56 weighted.
+- SAT updated from the October 2024 1330 sitting to 1510 (740 Reading and Writing, 770 Math).
+- Cedars-Sinai hours corrected from "250+" to 173 hours in NICU and Tower Hematology Oncology, October 2023 to July 2025.
+- Junior-year Student Council role corrected from Class Representative to Committee Member.
 
 ## 2026-09-27
 
